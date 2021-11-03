@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../datatables.min.css"/>	
+        <script type="text/javascript" src="js/com.jquery_min.js"></script>
+        <script type="text/javascript" src="../datatables.min.js"></script>
+        <script type="text/javascript" >
+  $(document).ready(function() {
+    $('#example').DataTable( {
+        "processing": true,
+        "serverSide": true,   
+        "scrollX": true,
+        "ajax":function($dtData_, $callback_, $setting_) {
+    //   if ($getSetting_("url")) { 
+        var $customData_ ={};//  $getSetting_("params") ? $getSetting_("params") : {}; 
+            $customData_ = $.extend( $customData_,$dtData_);
+        var $isRaw_ =false;// $getSetting_("$post_type_");
+        $.ajax({
+            type: 'get',
+            cache: false,
+            dataType: "json",
+            contentType: 'application/json',
+            data: $isRaw_ ? JSON.stringify($customData_) : $customData_,
+            url:"https://seedunk.com/datax/rui-datatable-ajax.json",
+            success: function($res_) {
+                 console.log($res_); 
+                /**# 数据处理拦截器  if(options["parse"]){ res=	options["parse"](res);  } 
+                 */ 
+                //  if($getSetting_("responseParser")){
+                //     $res_=$getSetting_("responseParser")($data_,$res_);
+                //  }
+                $callback_($res_);
+                // $src_.$ruidatatables_[$tableId_].$data_ = $res_["data"];
+                // /**#动态获取数据回调 */
+                // if ($getSetting_("ajaxCallBack")) {
+                //     $getSetting_("ajaxCallBack")($res_);
+                // }
+                // /**#其他插件操作 */
+                // /**#清除刷新功能动画  */
+                // $("._prename_-table-" + $tableId_).removeClass("fa-spin");
+
+            },
+            error: function() {}
+        });
+
+    // } else {
+
+    //     /**#模拟空数据状态 or 初始化状态 */
+    //     if (typeof this.ruiTableVDrawCount == "undefined") {
+    //         this.ruiTableVDrawCount = 1;
+    //     }
+    //     this.ruiTableVDrawCount++;
+    //     var res = {};
+    //     res["draw"] = this.ruiTableVDrawCount;
+    //     res["iTotalRecords"] = 0;
+    //     res["length"] = 0;
+    //     res["recordsFiltered"] = 0;
+    //     res["recordsTotal"] = 0;
+    //     res["data"] = [];
+    //     callback(res);
+    // } 
+            return $setting_;
+            },
+        "columns": [
+            { "data": "first_name" },
+            { "data": "last_name" },
+            { "data": "position" },
+            { "data": "office" },
+            { "data": "start_date" },
+            { "data": "salary" }
+        ]
+    } );
+} );
+        </script>
+    </head>
+    <body>
+        <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Position</th>
+                    <th>Office</th>
+                    <th>Start date</th>
+                    <th>Salary</th>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>
